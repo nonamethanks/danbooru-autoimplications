@@ -26,16 +26,17 @@ class DatabaseRelatedTags(BaseModel):
 class DatabaseBurs(BaseModel):
     id = IntegerField(primary_key=True)
     script = CharField()
+    status = CharField()
     updated_at = DateTimeField(index=True)
 
     @property
     def imply_lines(self) -> list[str]:
-        lines = [re.sub(r"\s+", " ", line.strip()).strip() for line in self.script.split("\n")]  # type: ignore[attr-defined]
+        lines = [re.sub(r"\s+", " ", line.strip()).strip().lower() for line in self.script.split("\n")]  # type: ignore[attr-defined]
         return [line for line in lines if line.startswith(("create implication", "imply"))]
 
     @property
-    def implications(self) -> dict[str, list[str]]:
-        parsed: dict[str, list[str]] = defaultdict(list)
+    def implications(self) -> dict[str, list[dict[str, str]]]:
+        parsed: dict[str, list[dict[str, str]]] = defaultdict(list)
         for bur_line in self.imply_lines:
             line = bur_line.removeprefix("create implication").removeprefix("imply").strip()
 
@@ -48,18 +49,36 @@ class DatabaseBurs(BaseModel):
             if " " in antecedent or " " in consequent:
                 raise NotImplementedError(antecedent, consequent, bur_line)
 
-            parsed[antecedent] += [consequent]
+            parsed[antecedent] += [{consequent: self.status}]  # type: ignore[dict-item]
 
         return parsed
 
     @cache
     @staticmethod
-    def implication_map() -> dict[str, list[str]]:
-        implication_map: dict[str, list[str]] = defaultdict(list)
+    def implication_map() -> dict[str, list[dict[str, str]]]:
+        implication_map: dict[str, list[dict[str, str]]] = defaultdict(list)
         for bur in DatabaseBurs.select():
             for tag_name, implications in bur.implications.items():
                 implication_map[tag_name] += implications
         return implication_map
+
+    @classmethod
+    def implication_was_already_requested(cls, from_: str, to: str) -> bool:
+        implication_map = cls.implication_map()
+
+        if not (implications := implication_map.get(from_)):
+            return False
+
+        return any(next(iter(implication.keys())) == to for implication in implications)
+
+    @classmethod
+    def tag_has_pending_implication(cls, tag_name: str) -> bool:
+        implication_map = cls.implication_map()
+
+        if not (implications := implication_map.get(tag_name)):
+            return False
+
+        return any(next(iter(implication.values())) == "pending" for implication in implications)
 
 
 class DatabaseTags(BaseModel):
@@ -125,6 +144,7 @@ def update_database() -> None:
                 "id": bur.id,
                 "script": bur.script,
                 "updated_at": bur.updated_at,
+                "status": bur.status,
             }
             for bur in page
         ]

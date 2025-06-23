@@ -210,8 +210,12 @@ class Series(BaseModel):
         return None
 
     def should_skip_implication(self, _from: DanbooruTag, to: DanbooruTag) -> bool:
-        if to.name in DatabaseBurs.implication_map().get(_from.name, []):
+        if DatabaseBurs.implication_was_already_requested(from_=_from.name, to=to.name):
             logger.trace(f"Skipping {_from.name} -> {to.name} because this implication was already requested.")
+            return True
+
+        if DatabaseBurs.tag_has_pending_implication(tag_name=_from.name):
+            logger.trace(f"Skipping {_from.name} -> {to.name} because {_from.name} already has a pending implication..")
             return True
 
         return False
