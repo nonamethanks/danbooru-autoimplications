@@ -181,6 +181,11 @@ series:
     wiki_ids: [126524]
     autopost: true
 
+  - name: "vocaloid"
+    topic_id: 28271
+    wiki_ids: [74221]
+    autopost: true
+
   - name: "wuthering_waves"
     topic_id: 27205
     wiki_ids: [192114]
