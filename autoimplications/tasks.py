@@ -28,8 +28,9 @@ def send_implications() -> None:
     for series in Series.from_config():
         if not series.autopost:
             logger.info(f"Skipping series {series.name} because autopost is not configured.")
-        else:
-            logger.info(f"Running for series {series.name}")
+            continue
+
+        logger.info(f"Running for series {series.name}")
         try:
             series.scan_and_post()
         except TooManyBursError:

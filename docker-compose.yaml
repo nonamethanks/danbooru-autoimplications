@@ -10,4 +10,5 @@ services:
     volumes:
       - ./data/:/app/data/
       - ./config.yaml:/app/config.yaml
+      - ./bigquery_keys.json:/app/bigquery_keys.json
     command: /bin/sh -c "/app/run_tasks.sh"
