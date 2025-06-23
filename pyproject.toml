@@ -1,0 +1,77 @@
+[project]
+name = "danbooru-autoimplications"
+version = "0.1.0"
+description = "A bot that automatically searches for and submits implication requests for costume tags on Danbooru."
+requires-python = ">=3.12"
+dependencies = [
+    "celery>=5.5.3",
+    "click>=8.2.1",
+    "danbooru",
+    "google-cloud-bigquery>=3.34.0",
+    "loguru>=0.7.3",
+    "peewee>=3.18.1",
+    "pydantic>=2.11.7",
+    "pyyaml>=6.0.2",
+]
+
+[tool.uv.sources]
+danbooru = { git = "https://github.com/nonamethanks/python-danbooru.git" }
+
+[dependency-groups]
+dev = [
+    "ipython>=9.3.0",
+    "mypy>=1.16.1",
+    "ruff>=0.12.0",
+    "types-peewee>=3.18.1.20250601",
+]
+
+[tool.ruff]
+target-version = "py312"
+line-length = 140
+select = ["ALL"]
+ignore = [
+    "ANN002",  # Missing type annotation for *args
+    "ANN003",  # Missing type annotation for **kwargs
+    "ANN204",  # missing return type for special methods
+    "BLE001",  # catch Exception
+    "D",       # docstrings
+    "EM101",   # Exception must not use a string literal, assign to variable first
+    "EM102",   # Exception must not use an f-string literal
+    "ERA001",  # found commented-out code
+    "F401",    # automatic removal of unused imports
+    "FBT",     # flake8-boolean-trap
+    "G004",    # Logging statement uses f-string
+    "PLR2004", # allow-magic-value-types
+    "PT",      # pytest style
+    "RET504",  # Unnecessary variable assignment before `return` statement
+    "RET505",  # Unnecessary `else` after `return` statement
+    "RET506",  # Unnecessary `else` after `raise` statement
+    "RET507",  # Unnecessary `else` after `continue` statement
+    "RET508",  # Unnecessary `else` after `break` statement
+    "RUF001",  # allowed-confusables
+    "RUF003",  # Comment contains ambiguous unicode character
+    "RUF012",  # Mutable class attributes should be annotated with `typing.ClassVar`
+    "RUF018",  # Avoid assignment expressions in `assert` statements
+    "S101",    # assert detected
+    "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes # I don't fucking care
+    "SIM105",  # Use `contextlib.suppress(KeyError)` instead of try-except-pass
+    "SIM114",  # Combine `if` branches using logical `or` operator
+    "SLF001",  # Private member accessed
+    "T100",    # IPDB Trace used
+    "TD002",   # Missing author in TODO,
+    "TD003",   # Missing issue link
+    "TRY003",  # Avoid specifying long messages outside the exception class
+]
+
+
+[tool.autopep8]
+max_line_length = 140
+
+[tool.isort]
+line_length = 140
+
+[tool.mypy]
+check_untyped_defs = true
+follow_untyped_imports = true
+ignore_missing_imports = true
+plugins = ["pydantic.mypy"]

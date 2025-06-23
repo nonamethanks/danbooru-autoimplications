@@ -1,0 +1,13 @@
+name: implications
+services:
+  auto_implications:
+    container_name: autoimplications
+    build:
+      context: .
+    env_file:
+      - .env
+    restart: unless-stopped
+    volumes:
+      - ./data/:/app/data/
+      - ./config.yaml:/app/config.yaml
+    command: /bin/sh -c "/app/run_tasks.sh"

@@ -1,0 +1,19 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info
+
+# Virtual environments
+.venv
+
+
+*.db
+*.sqlite
+
+.env
+bigquery_keys.json
+
+data/celery/celery.*
