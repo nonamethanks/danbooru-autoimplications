@@ -22,40 +22,37 @@ series:
     wiki_ids: [111571]
     extra_costume_patterns:
       - r"^(?P<base_name>[^(]+?)(?P<extra_qualifier>the_\w+)(?P<qualifiers>(?:_\(.*\)))*$"
+    autopost: true
 
   - name: "atelier_(series)"
     topic_id: 26873
     wiki_ids: [109224]
     extra_qualifiers:
       - atelier
+    autopost: true
 
   - name: "azur_lane"
     topic_id: 23519
     wiki_ids: [91126]
+    autopost: true
 
   - name: "black_survival"
     topic_id: 32228
     wiki_ids: [242584]
+    autopost: true
 
   - name: "blue_archive"
     topic_id: 21341
     wiki_ids: [136349]
     line_blacklist:
       - "kei_(amas)_(blue_archive) -> kei_(blue_archive)"
+    autopost: true
 
   - name: "cookie_run"
     topic_id: 28362
     wiki_ids: [203490]
+    autopost: true
 
-  - name: "fate_(series)"
-    topic_id: 26405
-    wiki_ids: [74111, 139382, 218559]
-    extra_qualifiers:
-      - fate
-      - fate/prototype
-      - fate/extra
-      - fate/apocrypha
-    group_by_qualifier: false
 
   - name: "fire_emblem"
     topic_id: 22728
@@ -67,12 +64,14 @@ series:
       - fire_emblem_engage
       - fire_emblem_awakening
       - fire_emblem_echoes
+    autopost: true
 
   - name: "genshin_impact"
     topic_id: 19285
     wiki_ids: [121439]
     line_blacklist:
       - "nadia_(melusine)_(genshin_impact) -> nadia_(genshin_impact)"
+    autopost: true
 
   - name: "girls'_frontline"
     topic_id: 23293
@@ -81,20 +80,24 @@ series:
       - girls'_frontline_2
       - neural_cloud
       - reverse_collapse
+    autopost: true
 
   - name: honkai_impact_3rd
     topic_id: 25459
     wiki_ids: [181862]
     extra_qualifiers:
       - honkai_impact
+    autopost: true
 
   - name: "honkai:_star_rail"
     topic_id: 24117
     wiki_ids: [148987]
+    autopost: true
 
   - name: "identity_v"
     topic_id: 32035
     wiki_ids: [164998]
+    autopost: true
 
   - name: "kantai_collection"
     topic_id: 26671
@@ -105,22 +108,19 @@ series:
       - r"^(?P<base_name>[^(]+?)(?P<extra_qualifier>kai_ni|kai)(?P<qualifiers>(?:_\(.*\)))*$"
     line_blacklist:
       - "amagi_(battlecruiser)_(kancolle) -> amagi_(kancolle)"
+    autopost: true
 
   - name: "love_live!"
     topic_id: 27717
     wiki_ids: [246964]
+    autopost: true
 
   - name: "goddess_of_victory:_nikke"
     topic_id: 25272
     wiki_ids: [186316]
     extra_qualifiers:
       - nikke
-
-  - name: "marvel"
-    topic_id: 31091
-    wiki_ids: [217769]
-    extra_qualifiers:
-      - marvel_rivals
+    autopost: true
 
   - name: "pokemon"
     topic_id: 22703
@@ -131,13 +131,14 @@ series:
       - pokemon_heroes
     qualifier_blacklist:
       - prototype # we don't want pokemon prototypes to imply their official form
-
+    autopost: true
 
   - name: "princess_connect!"
     topic_id: 25913
     wiki_ids: [188656]
+    autopost: true
 
-  - name: "punishing: gray raven"
+  - name: "punishing:_gray_raven"
     topic_id: 25165
     wiki_ids: [171594]
     extra_qualifiers:
@@ -145,33 +146,61 @@ series:
     allow_sub_implications: false
     extra_costume_patterns:
       - r"^(?P<base_name>[^(]+?)(?P<extra_qualifier>:\w+)(?P<qualifiers>(?:_\(.*\)))*$"
+    autopost: true
 
   - name: "reverse:1999"
     topic_id: 24504
     wiki_ids: [170517]
+    autopost: true
 
   - name: "strinova"
     topic_id: 32385
-    wiki_ids: [156740] # wip: move to a proper list_of_ wiki
+    wiki_ids: [248692] # wip: move to a proper list_of_ wiki
+    autopost: true
 
   - name: "tales_of_(series)"
-    topic_id: 0
+    topic_id: 32422
     wiki_ids: [30701]
     extra_qualifiers:
       - tales
+    autopost: true
 
   - name: "umamusume"
     topic_id: 29925
     wiki_ids: [126524]
+    autopost: true
 
   - name: "wuthering_waves"
     topic_id: 27205
     wiki_ids: [192114]
+    autopost: true
 
   - name: "xenoblade"
     topic_id: 26163
     wiki_ids: [137054]
+    autopost: true
 
   - name: zenless_zone_zero
     topic_id: 30085
     wiki_ids: [149060]
+    autopost: true
+
+  ### not autoposted, too much of a clusterfuck ##
+
+  - name: "fate_(series)"
+    topic_id: 26405
+    wiki_ids: [74111, 139382, 218559]
+    extra_qualifiers:
+      - fate
+      - fate/prototype
+      - fate/extra
+      - fate/apocrypha
+    group_by_qualifier: false
+    autopost: false
+
+  - name: "marvel"
+    topic_id: 31091
+    wiki_ids: [217769]
+    extra_qualifiers:
+      - marvel_rivals
+    autopost: false

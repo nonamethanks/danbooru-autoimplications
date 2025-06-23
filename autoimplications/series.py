@@ -164,7 +164,11 @@ class Series(BaseModel):
 
         vetted_child_tags = []
 
+        first_words = {p.words[0] for p in parent_tags}
+
         for child_tag in child_tags:
+            if child_tag.words[0] not in first_words:
+                continue
             if not self.belongs_to_series(child_tag):
                 logger.debug(f"Potential child tag {child_tag.name} does not belong to {self.name}. Skipping...")
                 continue

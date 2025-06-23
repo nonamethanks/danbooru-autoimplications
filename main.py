@@ -1,8 +1,5 @@
 from __future__ import annotations
 
-import os
-from datetime import UTC, datetime, timedelta
-
 import click
 from loguru import logger
 
@@ -37,7 +34,7 @@ def main(series: str | None = None,
         try:
             config_series.scan_and_post(max_lines_per_bur=max_lines_per_bur)
         except TooManyBursError:
-            logger.exception(f"Too many BURs for '{config_series.name}' in {config_series.topic_url}. Stopping now. Go approve some!")
+            logger.error(f"Too many BURs for '{config_series.name}' in {config_series.topic_url}. Stopping now. Go approve some!")  # noqa: TRY400
         found = True
 
     if series and not found:
