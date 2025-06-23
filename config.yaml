@@ -128,6 +128,11 @@ series:
       - madoka_magica
     autopost: true
 
+  - name: path_to_nowhere
+    topic_id: 26359
+    wiki_ids: [181958]
+    autopost: true
+
   - name: "pokemon"
     topic_id: 22703
     wiki_ids: [12042, 29014]
