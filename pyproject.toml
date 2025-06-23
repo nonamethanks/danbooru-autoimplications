@@ -38,7 +38,6 @@ ignore = [
     "EM101",   # Exception must not use a string literal, assign to variable first
     "EM102",   # Exception must not use an f-string literal
     "ERA001",  # found commented-out code
-    "F401",    # automatic removal of unused imports
     "FBT",     # flake8-boolean-trap
     "G004",    # Logging statement uses f-string
     "PLR2004", # allow-magic-value-types
