@@ -8,6 +8,7 @@ services:
       - .env
     restart: unless-stopped
     volumes:
+      - ./autoimplications/:/app/autoimplications/
       - ./data/:/app/data/
       - ./config.yaml:/app/config.yaml
       - ./bigquery_keys.json:/app/bigquery_keys.json
