@@ -198,6 +198,34 @@ series:
     group_by_qualifier: false
     autopost: false
 
+  - name: "final_fantasy"
+    topic_id: 26731
+    wiki_ids: [13040]
+    extra_qualifiers: # fucking really?
+      - ff1
+      - ff2
+      - ff3
+      - ff4
+      - ff5
+      - ff6
+      - ff7
+      - ff8
+      - ff9
+      - ff10
+      - ff11
+      - ff12
+      - ff13
+      - ff14
+      - ff15
+      - ff16
+      - ffo
+      - fft
+      - fft-0
+      - dff
+      - woff
+      - ffmq
+    autopost: false
+
   - name: "marvel"
     topic_id: 31091
     wiki_ids: [217769]
