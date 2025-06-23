@@ -53,7 +53,6 @@ series:
     wiki_ids: [203490]
     autopost: true
 
-
   - name: "fire_emblem"
     topic_id: 22728
     wiki_ids: [24408]
@@ -120,6 +119,13 @@ series:
     wiki_ids: [186316]
     extra_qualifiers:
       - nikke
+    autopost: true
+
+  - name: mahou_shoujo_madoka_magica
+    topic_id: 27298
+    wiki_ids: [133865]
+    extra_qualifiers:
+      - madoka_magica
     autopost: true
 
   - name: "pokemon"

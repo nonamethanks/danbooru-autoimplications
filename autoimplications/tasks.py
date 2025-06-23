@@ -21,6 +21,8 @@ tasks = Celery(  # type: ignore[call-arg]
 def setup_periodic_tasks(sender: Celery, **kwargs) -> None:  # noqa: ARG001
     sender.add_periodic_task(crontab(minute="13", hour="13"), send_implications.s(), name="Send implications to danbooru.")
 
+    # TODO: send me a daily email with a summary of what was done at the end
+
 
 @tasks.task(max_retries=0)
 def send_implications() -> None:

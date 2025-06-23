@@ -46,7 +46,7 @@ class Series(BaseModel):
 
     grep: str | None = None
 
-    autopost: bool = False
+    autopost: bool
 
     MAX_BURS_PER_TOPIC: int = 10
     POSTED_BURS: int = 0
