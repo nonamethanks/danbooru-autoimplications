@@ -10,6 +10,7 @@ services:
     volumes:
       - ./autoimplications/:/app/autoimplications/
       - ./data/:/app/data/
+      - ./run_tasks.sh:/app/run_tasks.sh
       - ./config.yaml:/app/config.yaml
       - ./bigquery_keys.json:/app/bigquery_keys.json
     command: /bin/sh -c "/app/run_tasks.sh"
