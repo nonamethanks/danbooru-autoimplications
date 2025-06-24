@@ -1,5 +1,6 @@
 from celery import Celery
 from celery.schedules import crontab
+from celery_once import QueueOnce
 
 from autoimplications import logger
 from autoimplications.database import update_database
@@ -16,6 +17,14 @@ tasks = Celery(  # type: ignore[call-arg]
     },
 )
 
+tasks.conf.ONCE = {
+    "backend": "celery_once.backends.File",
+    "settings": {
+        "location": "/tmp/celery_once",  # noqa: S108
+        "default_timeout": 60 * 60,
+    },
+}
+
 
 @tasks.on_after_configure.connect  # type: ignore[union-attr]
 def setup_periodic_tasks(sender: Celery, **kwargs) -> None:  # noqa: ARG001
@@ -24,7 +33,7 @@ def setup_periodic_tasks(sender: Celery, **kwargs) -> None:  # noqa: ARG001
     # TODO: send me a daily email with a summary of what was done at the end
 
 
-@tasks.task(max_retries=0)
+@tasks.task(base=QueueOnce, max_retries=0)
 def send_implications() -> None:
     update_database()
     for series in Series.from_config():
