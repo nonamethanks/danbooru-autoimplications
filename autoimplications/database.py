@@ -129,6 +129,10 @@ def update_database() -> None:
                          database=tag_database,
                          where="post_count > 0 AND category = 4")
 
+    update_bur_db()
+
+
+def update_bur_db() -> None:
     logger.info("Updating BUR DB.")
     try:
         last_checked_bur = DatabaseBurs.select().order_by(DatabaseBurs.updated_at.desc()).get()

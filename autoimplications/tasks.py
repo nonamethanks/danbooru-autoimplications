@@ -14,6 +14,7 @@ tasks = Celery(  # type: ignore[call-arg]
         "data_folder_in": "./data/celery",
         "data_folder_out": "./data/celery",
         "control_folder": "./data/celery",
+        "visibility_timeout": "3600",
     },
 )
 
@@ -21,7 +22,7 @@ tasks.conf.ONCE = {
     "backend": "celery_once.backends.File",
     "settings": {
         "location": "/tmp/celery_once",  # noqa: S108
-        "default_timeout": 60 * 60,
+        "default_timeout": 3600,
     },
 }
 
