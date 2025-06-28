@@ -11,9 +11,9 @@ logger = logger.opt(colors=True)
 tasks = Celery(  # type: ignore[call-arg]
     broker_url="filesystem://",
     broker_transport_options={
-        "data_folder_in": "./data/celery",
-        "data_folder_out": "./data/celery",
-        "control_folder": "./data/celery",
+        "data_folder_in": "/tmp/celery",
+        "data_folder_out": "/tmp/celery",
+        "control_folder": "/tmp/celery",
         "visibility_timeout": "3600",
     },
 )
@@ -21,7 +21,7 @@ tasks = Celery(  # type: ignore[call-arg]
 tasks.conf.ONCE = {
     "backend": "celery_once.backends.File",
     "settings": {
-        "location": "/tmp/celery_once",  # noqa: S108
+        "location": "/tmp/celery/celery_once",
         "default_timeout": 3600,
     },
 }

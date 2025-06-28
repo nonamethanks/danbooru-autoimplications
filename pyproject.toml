@@ -53,6 +53,7 @@ ignore = [
     "RUF012",  # Mutable class attributes should be annotated with `typing.ClassVar`
     "RUF018",  # Avoid assignment expressions in `assert` statements
     "S101",    # assert detected
+    "S108",    # TMPFS
     "S311",    # Standard pseudo-random generators are not suitable for cryptographic purposes # I don't fucking care
     "SIM105",  # Use `contextlib.suppress(KeyError)` instead of try-except-pass
     "SIM114",  # Combine `if` branches using logical `or` operator

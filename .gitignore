@@ -15,5 +15,3 @@ wheels/
 
 .env
 bigquery_keys.json
-
-data/celery/celery.*
