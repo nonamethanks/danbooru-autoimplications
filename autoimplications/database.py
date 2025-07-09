@@ -114,6 +114,7 @@ COPYRIGHT_MAP = {tag["name"]: tag["related_copyrights"].split(",") for tag in Da
 def update_database() -> None:
     with tag_database:
         tag_database.create_tables([DatabaseRelatedTags, DatabaseBurs, DatabaseTags])
+        DatabaseBurs.add_index(DatabaseBurs.index(DatabaseBurs.status))
 
     clone_bigquery_table("tags",
                          model=DatabaseTags,
@@ -146,3 +147,5 @@ def update_bur_db() -> None:
         logger.info(f"Inserting or updating {len(rows)} BURs.")
         with tag_database.atomic():
             DatabaseBurs.replace_many(rows).execute()
+
+    logger.info("Database updated.")
