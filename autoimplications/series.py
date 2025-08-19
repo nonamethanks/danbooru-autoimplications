@@ -199,7 +199,7 @@ class Series(BaseModel):
         possible_parents.sort(key=lambda t: len(t), reverse=self.allow_sub_implications)
         for parent_name in possible_parents:
             if f"imply {tag.name} -> {parent_name}" in self.line_blacklist:
-                logger.trace(f"Skipping {tag.name} -> {parent_name} because this implication was blacklisted.")
+                logger.debug(f"Skipping {tag.name} -> {parent_name} because this implication was blacklisted.")
                 continue
 
             if not (parent := self.all_tag_map.get(parent_name)):
@@ -215,11 +215,11 @@ class Series(BaseModel):
 
     def should_skip_implication(self, _from: DanbooruTag, to: DanbooruTag) -> bool:
         if DatabaseBurs.tag_has_pending_implication(tag_name=_from.name):
-            logger.trace(f"Skipping {_from.name} -> {to.name} because {_from.name} already has a pending implication..")
+            logger.debug(f"Skipping {_from.name} -> {to.name} because {_from.name} already has a pending implication..")
             return True
 
         if DatabaseBurs.implication_was_already_requested(from_=_from.name, to=to.name):
-            logger.trace(f"Skipping {_from.name} -> {to.name} because this implication was already requested.")
+            logger.debug(f"Skipping {_from.name} -> {to.name} because this implication was already requested.")
             return True
 
         return False
