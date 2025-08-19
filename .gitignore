@@ -15,3 +15,5 @@ wheels/
 
 .env
 bigquery_keys.json
+
+out.txt
