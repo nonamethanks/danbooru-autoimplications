@@ -198,7 +198,7 @@ class Series(BaseModel):
 
         possible_parents.sort(key=lambda t: len(t), reverse=self.allow_sub_implications)
         for parent_name in possible_parents:
-            if f"{tag.name} -> {parent_name}" in self.line_blacklist:
+            if f"imply {tag.name} -> {parent_name}" in self.line_blacklist:
                 logger.trace(f"Skipping {tag.name} -> {parent_name} because this implication was blacklisted.")
                 continue
 
@@ -301,6 +301,7 @@ class Series(BaseModel):
 
     def scan_and_post(self, max_lines_per_bur: int = 1) -> None:
         logger.info(f"Processing series: {self.name}. Topic: {self.topic_url}.")
+        logger.info(f"Blacklisted lines: {len(self.line_blacklist)}")
         logger.info(f"There are {len(self.implication_groups)} implication groups. "
                     f"Max lines per BUR: {max_lines_per_bur}.")
         logger.info(f"Remaining amount of BURs that can be posted {self.topic_url}: {self.remaining_bur_slots}.")

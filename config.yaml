@@ -45,7 +45,7 @@ series:
     topic_id: 21341
     wiki_ids: [136349]
     line_blacklist:
-      - "kei_(amas)_(blue_archive) -> kei_(blue_archive)"
+      - "imply kei_(amas)_(blue_archive) -> kei_(blue_archive)"
     autopost: true
 
   - name: "cookie_run"
@@ -69,7 +69,7 @@ series:
     topic_id: 19285
     wiki_ids: [121439]
     line_blacklist:
-      - "nadia_(melusine)_(genshin_impact) -> nadia_(genshin_impact)"
+      - "imply nadia_(melusine)_(genshin_impact) -> nadia_(genshin_impact)"
     autopost: true
 
   - name: "girls'_frontline"
@@ -106,7 +106,7 @@ series:
     extra_costume_patterns:
       - r"^(?P<base_name>[^(]+?)(?P<extra_qualifier>kai_ni|kai)(?P<qualifiers>(?:_\(.*\)))*$"
     line_blacklist:
-      - "amagi_(battlecruiser)_(kancolle) -> amagi_(kancolle)"
+      - "imply amagi_(battlecruiser)_(kancolle) -> amagi_(kancolle)"
     autopost: true
 
   - name: "love_live!"
@@ -213,6 +213,13 @@ series:
       - fate/apocrypha
     group_by_qualifier: false
     autopost: false
+    line_blacklist:
+      - "imply ector_(orca)_(fate) -> ector_(fate)"
+      - "imply hephaestion_(true)_(fate) -> hephaestion_(fate)"
+      - "imply kyokutei_bakin_(past)_(fate) -> kyokutei_bakin_(fate)"
+      - "imply miyamoto_musashi_(male)_(fate) -> miyamoto_musashi_(fate)"
+      - "imply oda_nobunaga_(genuine)_(fate) -> oda_nobunaga_(fate)"
+      - "imply spriggan_(enemy)_(fate) -> spriggan_(fate)"
 
   - name: "final_fantasy"
     topic_id: 26731
