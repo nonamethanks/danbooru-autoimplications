@@ -164,6 +164,11 @@ series:
     wiki_ids: [170517]
     autopost: true
 
+  - name: stella_sora
+    topic_id: 33621
+    wiki_ids: [226408]
+    autopost: true
+
   - name: "strinova"
     topic_id: 32385
     wiki_ids: [248692] # wip: move to a proper list_of_ wiki
