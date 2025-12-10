@@ -43,6 +43,7 @@ class Series(BaseModel):
 
     line_blacklist: list[str] = Field(default_factory=list)
     qualifier_blacklist: list[str] = Field(default_factory=list)
+    qualifiers_skipping_hierarchy: list[str] = Field(default_factory=list)
 
     grep: str | None = None
 
@@ -405,13 +406,16 @@ class Series(BaseModel):
         all_possible_parents: list[str] = []
 
         matched_count = 0
+
         for pattern in self.costume_patterns:
+            # check the tag against each possible pattern
             if not (match := pattern.match(tag.name)):
                 continue
 
             matched_count += 1
             possible_parents = []
 
+            # extract the base name, and split the rest of the tag name into all possible qualifiers
             base_name = match.groupdict()["base_name"]
             extra_qualifier = match.groupdict().get("extra_qualifier")
             try:
@@ -421,14 +425,44 @@ class Series(BaseModel):
 
             qualifiers = [q.strip("_") for q in [extra_qualifier, *qualifiers] if q]
 
+            # extract the series qualifier (if it exists) so that we always force it to be present in the potential generated parents
             series_qualifier_pattern = rf"_\({self.qualifiers_pattern}\)$"
             if re.search(series_qualifier_pattern, tag.name):
                 [*qualifiers, series_qualifier] = qualifiers
             else:
                 series_qualifier = None
 
+            # now that we have the list of qualifiers in an array, we generate every possible iteration
+            # these iterations will be later tested against existing tags to find the right one
+            # ie, tiki_(young)_(legendary_dragon)_(resplendent)_(fire_emblem) will consider, in this order, for:
+            # ** tiki_(young)_(legendary_dragon)_(fire_emblem)
+            # ** tiki_(young)_(fire_emblem)
+            # ** tiki_(fire_emblem)
+
+            # sometimes qualifiers (like resplendent for FE) are considered sufficiently different forms
+            # thus, if we find one of those qualifiers, we skip the qualifier before it, to go straight to the successive parent
+            #
+            # to follow the example above, if "resplendent" is a qualifier that's skipping the hierarchy:
+            # tiki_(young)_(legendary_dragon)_(resplendent)_(fire_emblem) generates:
+            # xx tiki_(young)_(legendary_dragon)_(fire_emblem) <---- this is skipped because legendary_dragon was before resplendent
+            # ** tiki_(young)_(fire_emblem)
+            # ** tiki_(fire_emblem)
+
+            # we basically find the position of every qualifier that needs to be treated specially,
+            # and skip the parent that would be generated right before
+            bad_indexes = [qualifiers.index(q) for q in self.qualifiers_skipping_hierarchy if q in qualifiers]
+
             for index in range(len(qualifiers)):
-                partial_qualifier = "_".join(qualifiers[:index])
+                target_qualifiers = qualifiers[:index]
+
+                # here we skip parents that would violate the condition mentioned above
+                # try to avoid the above logic if the last qualifier is actually meaningful though
+                if index > 0 and index in bad_indexes \
+                        and target_qualifiers[-1] not in ["(adult)", "(child)", "(teenager)", "(young)", "(timeskip)"]:
+                    continue
+
+                target_qualifiers = qualifiers[:index]
+                partial_qualifier = "_".join(target_qualifiers)
 
                 possible_parent = f"{base_name}_{partial_qualifier}"
                 if series_qualifier:

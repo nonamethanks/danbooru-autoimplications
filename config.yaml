@@ -12,6 +12,7 @@
 # extra qualifier: array of strings, optional
 # line_blacklist: array of strings (blacklists specific implication requests)
 # qualifier_blacklist: array of strings (blacklists specific qualifiers from ever being implicated)
+# qualifiers_skipping_hierarchy: array of strings (qualifiers that ignore the preceding qualifier when searching for a parent)
 # group_by_qualifier: boolean, default true, optional (whether single-line BURs are grouped by qualifier)
 # allow_sub_implications: boolean, default true (allow costumes to imply other costumes)
 # autopost: bool, default false
@@ -63,6 +64,8 @@ series:
       - fire_emblem_engage
       - fire_emblem_awakening
       - fire_emblem_echoes
+    qualifiers_skipping_hierarchy:
+      - (resplendent)
     autopost: true
 
   - name: "genshin_impact"
