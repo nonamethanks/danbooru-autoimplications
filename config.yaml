@@ -103,7 +103,7 @@ series:
 
   - name: "idolmaster"
     topic_id: 33322
-    wiki_ids: [188821, 264153]
+    wiki_ids: [188821, 264153, 43207, 52590]
     autopost: true
 
   - name: "kantai_collection"
