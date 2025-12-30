@@ -101,6 +101,11 @@ series:
     wiki_ids: [164998]
     autopost: true
 
+  - name: "idolmaster"
+    topic_id: 33322
+    wiki_ids: [188821, 264153]
+    autopost: true
+
   - name: "kantai_collection"
     topic_id: 26671
     wiki_ids: [62620]
