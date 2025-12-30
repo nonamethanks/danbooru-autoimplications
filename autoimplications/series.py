@@ -55,6 +55,8 @@ class Series(BaseModel):
     group_by_qualifier: bool = True
     allow_sub_implications: bool = True
 
+    league_of_legends_style_costume_tags: bool = False
+
     def __hash__(self) -> int:
         return hash(f"{self.topic_id}-{self.name}")
 
@@ -181,23 +183,41 @@ class Series(BaseModel):
     def all_tag_map(self) -> dict[str, DanbooruTag]:
         return {t.name: t for t in self.all_tags_from_wiki + self.all_tags_from_search}
 
+    def cleanup_possible_parents(self, tag: DanbooruTag, possible_parents: list[str]) -> list[str]:
+        parents = []
+
+        for possible_parent in possible_parents:
+            possible_parent = re.sub(r"_+", "_", possible_parent).strip("_")  # noqa: PLW2901
+
+            if possible_parent == tag.name:
+                continue
+
+            parents.append(possible_parent)
+
+        parents = list(dict.fromkeys(parents))
+        parents.sort(key=lambda t: len(t), reverse=self.allow_sub_implications)
+
+        return parents
+
     def get_parent_for_tag(self, tag: DanbooruTag) -> DanbooruTag | None:
         if tag.antecedent_implications:
             return None
 
-        if set(tag.qualifiers) & set(self.qualifier_blacklist):
-            return None
+        if self.league_of_legends_style_costume_tags:
+            possible_parents = self.get_possible_parents_for_lol(tag)
 
-        possible_parents = self.get_possible_parents(tag)
+        else:
 
-        if possible_parents is False:
-            return None
+            if set(tag.qualifiers) & set(self.qualifier_blacklist):
+                return None
 
+            possible_parents = self.get_possible_parents(tag)
+
+        possible_parents = self.cleanup_possible_parents(tag, possible_parents)
         if not possible_parents:
             logger.trace(f"Could not determine a parent for {tag.name}")
             return None
 
-        possible_parents.sort(key=lambda t: len(t), reverse=self.allow_sub_implications)
         for parent_name in possible_parents:
             if f"imply {tag.name} -> {parent_name}" in self.line_blacklist:
                 logger.debug(f"Skipping {tag.name} -> {parent_name} because this implication was blacklisted.")
@@ -402,18 +422,13 @@ class Series(BaseModel):
 
         return any(qualifier in known_copyrights for qualifier in self.series_qualifiers)
 
-    def get_possible_parents(self, tag: DanbooruTag) -> list[str] | Literal[False]:
-        all_possible_parents: list[str] = []
-
-        matched_count = 0
+    def get_possible_parents(self, tag: DanbooruTag) -> list[str]:
+        possible_parents = []
 
         for pattern in self.costume_patterns:
             # check the tag against each possible pattern
             if not (match := pattern.match(tag.name)):
                 continue
-
-            matched_count += 1
-            possible_parents = []
 
             # extract the base name, and split the rest of the tag name into all possible qualifiers
             base_name = match.groupdict()["base_name"]
@@ -468,20 +483,23 @@ class Series(BaseModel):
                 if series_qualifier:
                     possible_parent = f"{possible_parent}_{series_qualifier}"
 
-                possible_parent = re.sub(r"_+", "_", possible_parent).strip("_")
-                if possible_parent == tag.name:
-                    continue
-
                 possible_parents.append(possible_parent)
 
-            if len(possible_parents) == 0:
-                matched_count -= 1
-            all_possible_parents += possible_parents
+        return possible_parents
 
-        if not matched_count:
-            return False
+    def get_possible_parents_for_lol(self, tag: DanbooruTag) -> list[str] | Literal[False]:
+        # this is easier: just remove the qualifier, then try to remove each word of the full tag name
+        base_tag = tag.name.split("(")[0].strip("_")
+        tag_segments = [t for t in base_tag.split("_") if not t.startswith("(")]
 
-        return list(dict.fromkeys(all_possible_parents))
+        possible_parents = []
+        for index in range(1, len(tag_segments)):
+            reduced_tag = "_".join(tag_segments[index:])
+            possible_parents += [reduced_tag]
+            for qualifier in self.series_qualifiers:
+                possible_parents += [f"{reduced_tag}_({qualifier})"]
+
+        return possible_parents
 
     @staticmethod
     def from_config(grep: str | None = None) -> list[Series]:

@@ -257,6 +257,12 @@ series:
       - ffmq
     autopost: false
 
+  - name: "league_of_legends"
+    topic_id: 20958
+    wiki_ids: [113970]
+    autopost: false # can't be automated because there's no way to search for all LoL skins at once
+    league_of_legends_style_costume_tags: true
+
   - name: "marvel"
     topic_id: 31091
     wiki_ids: [217769]
