@@ -30,7 +30,8 @@ def main(series: str | None = None,
         if series and not config_series.matches(series):
             continue
 
-        config_series.autopost = post_to_danbooru
+        if series:
+            config_series.autopost = post_to_danbooru
         try:
             config_series.scan_and_post(max_lines_per_bur=max_lines_per_bur)
         except TooManyBursError:
