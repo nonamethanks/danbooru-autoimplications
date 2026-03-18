@@ -23,7 +23,12 @@ class ImplicationGroup(BaseModel):
 
     @property
     def tags_without_wiki(self) -> list[DanbooruTag]:
-        return [tag for tag in self.subtags if not tag.wiki_page]
+        tags = [tag for tag in self.subtags
+                if not tag.wiki_page
+                or tag.wiki_page.is_deleted
+                or not tag.wiki_page.body.strip()]
+
+        return tags
 
     # def create_missing_wikis(self) -> None:
     #     for tag in self.tags_without_wiki:

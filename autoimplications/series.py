@@ -392,12 +392,19 @@ class Series(BaseModel):
         if self.autopost:
             if self.remaining_bur_slots <= 0:
                 raise TooManyBursError
-            DanbooruBulkUpdateRequest.create(
-                forum_topic_id=self.topic_id,
-                script=script,
-                reason=self.bur_reason,
-            )
-            self.POSTED_BURS += 1
+            try:
+                DanbooruBulkUpdateRequest.create(
+                    forum_topic_id=self.topic_id,
+                    script=script,
+                    reason=self.bur_reason,
+                )
+            except NotImplementedError as e:
+                if "must have a wiki page" in str(e):
+                    # parent has no wiki, too much of a pain in the ass to bother
+                    logger.exception(f"Error: a parent tag is missing a wiki in this script: {script}")
+                    raise
+            else:
+                self.POSTED_BURS += 1
 
     def belongs_to_series(self, tag: DanbooruTag) -> bool:
         if tag.has_series_qualifier(self.series_qualifiers):
