@@ -136,6 +136,11 @@ series:
       - madoka_magica
     autopost: true
 
+  - name: "neverness_to_everness"
+    topic_id: 35928
+    wiki_ids: [286595]
+    autopost: true
+
   - name: path_to_nowhere
     topic_id: 26359
     wiki_ids: [181958]
