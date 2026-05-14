@@ -139,6 +139,8 @@ series:
   - name: "neverness_to_everness"
     topic_id: 35928
     wiki_ids: [286595]
+    extra_qualifiers:
+      - nte
     autopost: true
 
   - name: path_to_nowhere
